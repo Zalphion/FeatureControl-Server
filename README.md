@@ -74,19 +74,19 @@ Only use this for testing. You'll always lose data when the container restarts.
 
 ## Ports & Networking
 
-| Port   | Protocol | Default Config    | Scope    | Description                                      |
-| ------ | -------- | ----------------- | -------- | ------------------------------------------------ |
-| `8000` | TCP      | `PORT=8000`       | Primary  | User HTTP traffic: Web UI, API                   |
-| `8001` | TCP      | `ADMIN_PORT=8001` | Internal | Not to be exposed. See [System CLI](#system-cli) |
+| Port   | Protocol | Environment Variable | Description                                    |
+| ------ | -------- | -------------------- | ---------------------------------------------- |
+| `8000` | TCP      | `PORT`               | User HTTP traffic: Web UI, API                 |
+| `8001` | TCP      | `ADMIN_PORT`         | Not to be exposed. See [Admin CLI](#admin-cli) |
 
-## System CLI
+## Admin CLI
 
 Feature Control is a distroless container; it does not contain a shell, nor any binaries beyond a stripped Java runtime.
-Instead, the System CLI supports container health check and recovery via `docker exec`.
+Instead, the Admin CLI supports container health check and recovery via `docker exec`.
 
 ```shell
 $ docker exec <container_name_or_id> java -jar app.jar --help
-Usage: system [<options>] <command> [<args>]...
+Usage: admin [<options>] <command> [<args>]...
 
 Options:
   -h, --help  Show this message and exit
@@ -106,7 +106,7 @@ but the remainder will be explained below.
 With `USER_SELF_REGISTRATION` set to `false`, there's a chicken-and-the-egg problem.
 If users can't register themselves, how do you create the initial super admin?
 First, ensure you have `SUPER_ADMIN_EMAILS` populated.
-Then use the system CLI to create the initial user.
+Then use the Admin CLI to create the initial user.
 
 ```sh
 $ docker exec <container_id> \
@@ -121,7 +121,7 @@ If you have Social Login enabled, you can end here and login normally. Otherwise
 ### Password Recovery
 
 If you don't have Social Login enabled, forgetting a password requires super admin intervention.
-But if you're a super admin, you can use the system CLI to generate a user recovery code,
+But if you're a super admin, you can use the Admin CLI to generate a user recovery code,
 which can be used to reset the password on the login page.
 
 ```sh
