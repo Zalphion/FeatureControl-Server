@@ -1,0 +1,3 @@
+The Feature Control Server is proprietary, closed-source software.
+
+This repository serves as the public presence for documentation and issues.
