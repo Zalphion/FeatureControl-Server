@@ -21,34 +21,34 @@ $ docker run \
 
 ## Environment Variables
 
-| Name                        | Required    | Description                                                                                                                                                                     |
-| --------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ORIGIN                      | Yes         | The base URI that users will access the service with.<br/>e.g. `https://features.acme.corp:8443`                                                                                |
-| DATABASE_TYPE               | Yes         | Permitted values: `Postgresql`, `Sqlite`, and `SqliteMemory`                                                                                                                    |
-| DATABASE_URI                | Conditional | Required when `DATABASE_TYPE` is `Postgresql`.<br/>Requires a virtual database to be selected; schema is optional.<br/>e.g. `postgresql://mydb:5432/corp?current_schema=public` |
-| DATABASE_USERNAME           | Conditional | Required when `DATABASE_TYPE` is `Postgresql`.<br/>Requires full control over the selected schema                                                                               |
-| DATABASE_PASSWORD           | Conditional | Required when `DATABASE_TYPE` is `Postgresql`                                                                                                                                   |
-| DATABASE_PATH               | Conditional | Required when `DATABASE_TYPE` is `Sqlite`.<br/>Control location of the sqlite database file. WARNING: Should be an attached volume                                              |
-| PORT                        | No          | Port the web service will bind to. Default: `8000`                                                                                                                              |
-| ADMIN_PORT                  | No          | Port the internal Admin API will bind to. Default: `8001`                                                                                                                       |
-| PASSWORD_AUTHENTICATION     | No          | Prefer disabled in favour of Social Login.<br/>Permitted values: `true`, `false`. Default: `false`                                                                              |
-| BCRYPT_COST                 | No          | Cost factor for BCrypt KDF operations.<br/>Permitted values: `4`, `8`, `10`, `12`, `14`, and `16`. Default: `12`                                                                |
-| USER_SELF_REGISTRATION      | No          | `true`: Allow users to create accounts.<br/>`false`: Super Admins must create accounts<br/>Default: `true`                                                                      |
-| APP_TITLE                   | No          | Friendly name for the application. Default: `Feature Control`                                                                                                                   |
-| SESSION_LENGTH              | No          | **ISO8601 Duration**. Length of a web session before it expires. Default: `P7D`                                                                                                 |
-| INVITATION_RETENTION_LENGTH | No          | **ISO8601 Duration**. How long until a team invitation expires. Default: `P7D`                                                                                                  |
-| PAGE_SIZE                   | No          | **ISO8601 Duration**. Internal page size for listing operation. Default: `100`                                                                                                  |
-| SDK_CACHE_MAX_AGE           | No          | **ISO8601 Duration**. `max-age` cache-control directive. Higher means greater cache efficiency at the risk of larger drift.<br/>Default: `P10S`                                 |
-| SDK_ACTIVE_TIMEOUT          | No          | **ISO8601 Duration**. How long without contact until an SDK is considered disconnected.<br/>Default: `P10M`                                                                     |
-| SUPER_ADMIN_EMAILS          | No          | Give super admins privileges.<br/>e.g. `john@acme.com,jane@acme.com`                                                                                                            |
-| GOOGLE_CLIENT_ID            | No          | Enables Google Social Login                                                                                                                                                     |
-| GITHUB_CLIENT_ID            | No          | Enables GitHub Social Login                                                                                                                                                     |
-| GITLAB_CLIENT_ID            | No          | Enables GitLab Social Login                                                                                                                                                     |
-| MICROSOFT_CLIENT_ID         | No          | Enables Microsoft Social Login                                                                                                                                                  |
-| GOOGLE_CLIENT_SECRET        | Conditional | Required when `GOOGLE_CLIENT_ID` is set                                                                                                                                         |
-| GITHUB_CLIENT_SECRET        | Conditional | Required when `GITHUB_CLIENT_ID` is set                                                                                                                                         |
-| GITLAB_CLIENT_SECRET        | Conditional | Required when `GITLAB_CLIENT_ID` is set                                                                                                                                         |
-| MICROSOFT_CLIENT_SECRET     | Conditional | Required when `MICROSOFT_CLIENT_ID` is set                                                                                                                                      |
+| Name                        | Required    | Description                                                                                                                                                             |
+| --------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ORIGIN                      | Yes         | The base URI that users will access the service with. e.g. `https://features.acme.corp:8443`                                                                            |
+| DATABASE_TYPE               | Yes         | Permitted values: `Postgresql`, `Sqlite`, and `SqliteMemory`                                                                                                            |
+| DATABASE_URI                | Conditional | Required when `DATABASE_TYPE` is `Postgresql`. Requires a virtual database to be selected; schema is optional. e.g. `postgresql://mydb:5432/corp?current_schema=public` |
+| DATABASE_USERNAME           | Conditional | Required when `DATABASE_TYPE` is `Postgresql`. Requires full control over the selected schema                                                                           |
+| DATABASE_PASSWORD           | Conditional | Required when `DATABASE_TYPE` is `Postgresql`                                                                                                                           |
+| DATABASE_PATH               | Conditional | Required when `DATABASE_TYPE` is `Sqlite`. Control location of the sqlite database file. WARNING: Should be an attached volume                                          |
+| PORT                        | No          | Port the web service will bind to. Default: `8000`                                                                                                                      |
+| ADMIN_PORT                  | No          | Port the internal Admin API will bind to. Default: `8001`                                                                                                               |
+| PASSWORD_AUTHENTICATION     | No          | Prefer disabled in favour of Social Login. Permitted values: `true`, `false`. Default: `false`                                                                          |
+| BCRYPT_COST                 | No          | Cost factor for BCrypt KDF operations. Permitted values: `4`, `8`, `10`, `12`, `14`, and `16`. Default: `12`                                                            |
+| USER_SELF_REGISTRATION      | No          | `true`: Allow users to create accounts. `false`: Super Admins must create accounts. Default: `true`                                                                     |
+| APP_TITLE                   | No          | Friendly name for the application. Default: `Feature Control`                                                                                                           |
+| SESSION_LENGTH              | No          | **ISO8601 Duration**. Length of a web session before it expires. Default: `P7D`                                                                                         |
+| INVITATION_RETENTION_LENGTH | No          | **ISO8601 Duration**. How long until a team invitation expires. Default: `P7D`                                                                                          |
+| PAGE_SIZE                   | No          | **ISO8601 Duration**. Internal page size for listing operation. Default: `100`                                                                                          |
+| SDK_CACHE_MAX_AGE           | No          | **ISO8601 Duration**. `max-age` cache-control directive. Higher means greater cache efficiency at the risk of larger drift. Default: `P10S`                             |
+| SDK_ACTIVE_TIMEOUT          | No          | **ISO8601 Duration**. How long without contact until an SDK is considered disconnected. Default: `P10M`                                                                 |
+| SUPER_ADMIN_EMAILS          | No          | Give super admins privileges. e.g. `john@acme.com,jane@acme.com`                                                                                                        |
+| GOOGLE_CLIENT_ID            | No          | Enables Google Social Login                                                                                                                                             |
+| GITHUB_CLIENT_ID            | No          | Enables GitHub Social Login                                                                                                                                             |
+| GITLAB_CLIENT_ID            | No          | Enables GitLab Social Login                                                                                                                                             |
+| MICROSOFT_CLIENT_ID         | No          | Enables Microsoft Social Login                                                                                                                                          |
+| GOOGLE_CLIENT_SECRET        | Conditional | Required when `GOOGLE_CLIENT_ID` is set                                                                                                                                 |
+| GITHUB_CLIENT_SECRET        | Conditional | Required when `GITHUB_CLIENT_ID` is set                                                                                                                                 |
+| GITLAB_CLIENT_SECRET        | Conditional | Required when `GITLAB_CLIENT_ID` is set                                                                                                                                 |
+| MICROSOFT_CLIENT_SECRET     | Conditional | Required when `MICROSOFT_CLIENT_ID` is set                                                                                                                              |
 
 ## Database Support
 
