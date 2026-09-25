@@ -12,8 +12,12 @@
 
 ## Quick-Start
 
-```shell
-docker run --env DATABASE_TYPE=SqliteMemory --env ORIGIN=http://localhost:8000 -p 8000:8000 zalphion/feature-control:latest
+```sh
+$ docker run \
+    --env DATABASE_TYPE=SqliteMemory \
+    --env ORIGIN=http://localhost:8000 \
+    -p 8000:8000 \
+    zalphion/feature-control:latest
 ```
 
 ## Environment Variables
@@ -112,7 +116,10 @@ First, ensure you have `SUPER_ADMIN_EMAILS` populated.
 Then use the system CLI to create the initial user.
 
 ```sh
-$ docker exec <container_id> java -jar app.jar create-user --email-address john@acme.com
+$ docker exec <container_id> \
+    java -jar app.jar \
+    create-user \
+    --email-address john@acme.com
 UserDto(id=3JpHFzRsyakZh3Jb1fCHN5Xlo9X, emailAddress=john@acme.com, name=john@acme.com, locale=en_CA)
 ```
 
@@ -126,19 +133,21 @@ But if you're a super admin, you can use the system CLI to generate a user recov
 which can be used to reset the password on the login page.
 
 ```sh
-$ docker exec <container_id> java -jar app.jar generate-user-recovery-code --email-address john@acme.com
+$ docker exec <container_id> \
+    java -jar app.jar \
+    generate-user-recovery-code \
+    --email-address john@acme.com
 CreatedRecoveryCodeDto(userId=3JpHFzRsyakZh3Jb1fCHN5Xlo9X, secret=xLqO06ApfXQ5CWRT, expires=2026-09-25T16:43:25.131351306Z)
 ```
 
 ## Docker Tags & Versioning
 
 We follow [Semantic Versioning](https://semver.org/).
-- `1.2.3` — Pinned to an exact patch release (recommended for production).
-- `1.2` — Tracks the latest patch under minor version `1.2`.
-- `1` — Tracks the latest minor and patch under major version `1`.
-- `latest` — Points to the most recent stable release.
-- `snapshot`: The latest bleeding-edge build
-- `<major>.<minor>.<patch>`: A specific release version
+- `1.2.3`: Pinned to an exact patch release
+- `1.2`: Tracks the latest patch for a specific minor version  (recommended)
+- `1`: Tracks the latest minor version for a specific major version
+- `latest`: Tracks the latest stable release
+- `snapshot`: Tracks the latest passing build
 
 
 ## Docker Compose Example
