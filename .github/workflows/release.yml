@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout latest code
+      - name: Checkout Dockerfile
         uses: actions/checkout@v7
 
       - name: Download Distribution

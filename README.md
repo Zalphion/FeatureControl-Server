@@ -59,14 +59,14 @@ Postgresql is required when you:
 
 - want multi-node deployments
 - want to leverage high availability and failover
-- want to take advantage of the automated backups and recovery provided by your RBDMS
+- want to take advantage of the automated backups and recovery provided by your RDBMS
 - reach a certain scale where sqlite becomes a bottleneck
 
 ### Sqlite
 
 A simple, file-based database that's ideal for small-scale deployments.
 Just ensure you use a persistent volume, or you'll lose data when the container restarts.
-You are also in charge of automated backups and recovery, where a postgresql RBDMS might handle this for you.
+You are also in charge of automated backups and recovery, where a postgresql RDBMS might handle this for you.
 
 ### SqliteMemory
 
