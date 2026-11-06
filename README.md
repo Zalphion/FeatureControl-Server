@@ -5,11 +5,8 @@
 - **Feature Flags**: with Advanced Rollout Strategies and Audiences
 - **Dynamic Config**: Keep your application subscribed to updates
 - **Low Cost**: Flat Pricing with a full-featured Free Tier
-- **Postgres Server Optional**: Sometimes you just can't beat Sqlite
-- **Distroless Image**: No shell, package manager, or extra bloat
-- **No Security Theatre**: Any "master secret key" is just a pretence at confidentiality
 
-## Two Editions
+## Editions
 
 ### Cloud
 

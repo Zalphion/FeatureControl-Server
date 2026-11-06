@@ -1,5 +1,11 @@
 # Feature Control: Hosted
 
+> Host on your own network.  Buy it once and keep it forever.
+
+- **Postgres Server Optional**: Sometimes you just can't beat Sqlite
+- **Distroless Image**: No shell, package manager, or extra bloat
+- **No Security Theatre**: Any "master secret key" is just a pretence at confidentiality
+
 ## Quick-Start
 
 ```sh
@@ -78,6 +84,8 @@ Only use for testing. You'll always lose data when the container restarts.
 | `8000` | TCP      | `PORT`               | User HTTP traffic: Web UI, API |
 
 ## Docker Tags & Versioning
+
+Find the available docker tags in the [Github Container Repository](https://github.com/Zalphion/FeatureControl-Server/pkgs/container/feature-control).
 
 We follow [Semantic Versioning](https://semver.org/).
 
