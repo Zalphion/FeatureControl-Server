@@ -6,164 +6,28 @@
 - **Dynamic Config**: Keep your application subscribed to updates
 - **Low Cost**: Flat Pricing with a full-featured Free Tier
 - **Postgres Server Optional**: Sometimes you just can't beat Sqlite
-- **Distroless & Secure**: No shell, package manager, or extra binaries
+- **Distroless Image**: No shell, package manager, or extra bloat
 - **No Security Theatre**: Any "master secret key" is just a pretence at confidentiality
 
-## Quick-Start
+## Two Editions
+
+### Cloud
+
+> Let us do the heavy lifting for you.  Simple and efficient.
+
+Get started with a free account at https://cloud.featurecontrol.app
+
+### Hosted
+
+> Host on your own network.  Buy it once and keep it forever.
+
+Read [HOSTED.md](https://github.com/Zalphion/FeatureControl-Server/blob/main/HOSTED.md) to get started, 
+or get your hands dirty right now.
 
 ```sh
 $ docker run \
     --env DATABASE_TYPE=SqliteMemory \
     --env ORIGIN=http://localhost:8000 \
     -p 8000:8000 \
-    zalphion/feature-control:latest
-```
-
-## Environment Variables
-
-| Name                        | Required    | Description                                                                                                                                                             |
-| --------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ORIGIN                      | Yes         | The base URI that users will access the service with. e.g. `https://features.acme.corp:8443`                                                                            |
-| DATABASE_TYPE               | Yes         | Permitted values: `Postgresql`, `Sqlite`, and `SqliteMemory`                                                                                                            |
-| DATABASE_URI                | Conditional | Required when `DATABASE_TYPE` is `Postgresql`. Requires a virtual database to be selected; schema is optional. e.g. `postgresql://mydb:5432/corp?current_schema=public` |
-| DATABASE_USERNAME           | Conditional | Required when `DATABASE_TYPE` is `Postgresql`. Requires full control over the selected schema                                                                           |
-| DATABASE_PASSWORD           | Conditional | Required when `DATABASE_TYPE` is `Postgresql`                                                                                                                           |
-| DATABASE_PATH               | Conditional | Required when `DATABASE_TYPE` is `Sqlite`. Control location of the sqlite database file. WARNING: Should be an attached volume                                          |
-| PORT                        | No          | Port the web service will bind to. Default: `8000`                                                                                                                      |
-| ADMIN_PORT                  | No          | Port the internal Admin API will bind to. Default: `8001`                                                                                                               |
-| PASSWORD_AUTHENTICATION     | No          | Prefer disabled in favour of Social Login. Permitted values: `true`, `false`. Default: `false`                                                                          |
-| BCRYPT_COST                 | No          | Cost factor for BCrypt KDF operations. Permitted values: `4`, `8`, `10`, `12`, `14`, and `16`. Default: `12`                                                            |
-| USER_SELF_REGISTRATION      | No          | `true`: Allow users to create accounts. `false`: Super Admins must create accounts. Default: `true`                                                                     |
-| APP_TITLE                   | No          | Friendly name for the application. Default: `Feature Control`                                                                                                           |
-| SESSION_LENGTH              | No          | **ISO8601 Duration**. Length of a web session before it expires. Default: `P7D`                                                                                         |
-| INVITATION_RETENTION_LENGTH | No          | **ISO8601 Duration**. How long until a team invitation expires. Default: `P7D`                                                                                          |
-| PAGE_SIZE                   | No          | **ISO8601 Duration**. Internal page size for listing operation. Default: `100`                                                                                          |
-| SDK_CACHE_MAX_AGE           | No          | **ISO8601 Duration**. `max-age` cache-control directive. Higher means greater cache efficiency at the risk of larger drift. Default: `PT10S`                            |
-| SDK_ACTIVE_TIMEOUT          | No          | **ISO8601 Duration**. How long without contact until an SDK is considered disconnected. Default: `PT10M`                                                                |
-| SUPER_ADMIN_EMAILS          | No          | Give super admins privileges. e.g. `john@acme.com,jane@acme.com`                                                                                                        |
-| GOOGLE_CLIENT_ID            | No          | Enables Google Social Login                                                                                                                                             |
-| GITHUB_CLIENT_ID            | No          | Enables GitHub Social Login                                                                                                                                             |
-| GITLAB_CLIENT_ID            | No          | Enables GitLab Social Login                                                                                                                                             |
-| MICROSOFT_CLIENT_ID         | No          | Enables Microsoft Social Login                                                                                                                                          |
-| GOOGLE_CLIENT_SECRET        | Conditional | Required when `GOOGLE_CLIENT_ID` is set                                                                                                                                 |
-| GITHUB_CLIENT_SECRET        | Conditional | Required when `GITHUB_CLIENT_ID` is set                                                                                                                                 |
-| GITLAB_CLIENT_SECRET        | Conditional | Required when `GITLAB_CLIENT_ID` is set                                                                                                                                 |
-| MICROSOFT_CLIENT_SECRET     | Conditional | Required when `MICROSOFT_CLIENT_ID` is set                                                                                                                              |
-
-## Database Support
-
-### Postgresql
-
-When in doubt, use this. While sqlite is simpler, if you ever need to upgrade, you'll need to perform a migration.
-Postgresql is required when you:
-
-- want multi-node deployments
-- want to leverage high availability and failover
-- want to take advantage of the automated backups and recovery provided by your RDBMS
-- reach a certain scale where sqlite becomes a bottleneck
-
-### Sqlite
-
-A simple, file-based database that's ideal for small-scale deployments.
-Just ensure you use a persistent volume, or you'll lose data when the container restarts.
-You are also in charge of automated backups and recovery, where a postgresql RDBMS might handle this for you.
-
-### SqliteMemory
-
-Only use this for testing. You'll always lose data when the container restarts.
-
-## Ports & Networking
-
-| Port   | Protocol | Environment Variable | Description                                    |
-| ------ | -------- | -------------------- | ---------------------------------------------- |
-| `8000` | TCP      | `PORT`               | User HTTP traffic: Web UI, API                 |
-| `8001` | TCP      | `ADMIN_PORT`         | Not to be exposed. See [Admin CLI](#admin-cli) |
-
-## Admin CLI
-
-Feature Control is a distroless container; it does not contain a shell, nor any binaries beyond a stripped Java runtime.
-Instead, the Admin CLI supports container health check and recovery via `docker exec`.
-
-```shell
-$ docker exec <container_name_or_id> java -jar app.jar --help
-Usage: admin [<options>] <command> [<args>]...
-
-Options:
-  -h, --help  Show this message and exit
-
-Commands:
-  start-server
-  create-user
-  generate-user-recovery-code
-  check-health
-```
-
-The `start-server` and `check-health` commands are used internally by the Dockerfile,
-but the remainder will be explained below.
-
-### Bootstrapping when USER_SELF_REGISTRATION is Disabled
-
-With `USER_SELF_REGISTRATION` set to `false`, there's a chicken-and-the-egg problem.
-If users can't register themselves, how do you create the initial super admin?
-First, ensure you have `SUPER_ADMIN_EMAILS` populated.
-Then use the Admin CLI to create the initial user.
-
-```sh
-$ docker exec <container_id> \
-    java -jar app.jar \
-    create-user \
-    --email-address john@acme.com
-UserDto(id=3JpHFzRsyakZh3Jb1fCHN5Xlo9X, emailAddress=john@acme.com, name=john@acme.com, locale=en_CA)
-```
-
-If you have Social Login enabled, you can end here and login normally. Otherwise, proceed to [Password Recovery](#password-recovery)
-
-### Password Recovery
-
-If you don't have Social Login enabled, forgetting a password requires super admin intervention.
-But if you're a super admin, you can use the Admin CLI to generate a user recovery code,
-which can be used to reset the password on the login page.
-
-```sh
-$ docker exec <container_id> \
-    java -jar app.jar \
-    generate-user-recovery-code \
-    --email-address john@acme.com
-CreatedRecoveryCodeDto(userId=3JpHFzRsyakZh3Jb1fCHN5Xlo9X, secret=xLqO06ApfXQ5CWRT, expires=2026-09-25T16:43:25.131351306Z)
-```
-
-## Docker Tags & Versioning
-
-We follow [Semantic Versioning](https://semver.org/).
-
-- `1.2.3`: Pinned to an exact patch release
-- `1.2`: Tracks the latest patch for a specific minor version (recommended)
-- `1`: Tracks the latest minor version for a specific major version
-- `latest`: Tracks the latest stable release
-- `snapshot`: Tracks the latest passing build
-
-## Docker Compose Example
-
-A sample server running with an embedded sqlite database.
-In production, you might ideally connect a feature-control replica set to an external Postgresql RDBMS cluster for superior scalability and durability.
-
-```yaml
-services:
-  feature_control:
-    image: zalphion/feature-control:latest
-    container_name: feature-control
-    environment:
-      PORT: 8000
-      ORIGIN: https://feature-control.mydomain.com
-      DATABASE_TYPE: Sqlite
-      DATABASE_PATH: /data/feature-control.db
-      SUPER_ADMIN_EMAILS: john@acme.com,jane@acme.com
-    ports:
-      - "8000:8000"
-    restart: unless-stopped
-    volumes:
-      - app_data:/data
-
-volumes:
-  app_data:
+    ghcr.io/zalphion/feature-control:latest
 ```
