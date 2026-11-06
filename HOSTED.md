@@ -91,10 +91,10 @@ We follow [Semantic Versioning](https://semver.org/).
 
 The [Dockerfile](https://github.com/Zalphion/FeatureControl-Server/blob/main/Dockerfile)
 and [Release Pipeline](https://github.com/Zalphion/FeatureControl-Server/blob/main/.github/workflows/release.yml)
-is publicly available for your inspection.  The source code of the application itself is proprietary and unavailable.
+are publicly available for your inspection.  The source code of the application itself is proprietary and unavailable.
 
 ## Deployment
 
 If you're contemplating a self-hosted deployment, then we'll defer to you on all the infrastructure decisions.
 If you're unsure how to deploy a production-ready docker application, then the
-[Cloud Edition](https://cloud.feature.control.app) will be a better fit for you.
+[Cloud Edition](https://cloud.featurecontrol.app) will be a better fit for you.
